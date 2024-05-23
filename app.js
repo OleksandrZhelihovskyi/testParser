@@ -5,6 +5,7 @@ const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const bodyParser = require("body-parser");
 const router = require("./router/index");
+const { PORT } = require("./config");
 app.use(express.static("public"));
 app.use(
   cors({
@@ -16,10 +17,9 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 const swaggerDocument = YAML.load("./swagger.yaml");
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/", router);
 
-const PORT = process.env.PORT || 2000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

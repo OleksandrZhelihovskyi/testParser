@@ -1,0 +1,49 @@
+swagger: "2.0"
+info:
+  title: testParser
+  description: API for test task (web parser using Node.js and Puppeteer)
+  version: 1.0.0
+servers:
+  - url: http://localhost:2000
+paths:
+  /:
+    get:
+      tags:
+        - Get catalogs data
+      summary: Get catalogs data
+      responses:
+        "200":
+          description: Catalogs data returned
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    description: Title of the event
+                  start:
+                    type: string
+                    format: date-time
+                    description: Start date and time of the event in ISO 8601 format
+                  end:
+                    type: string
+                    format: date-time
+                    description: End date and time of the event in ISO 8601 format
+                  link:
+                    type: string
+                    format: uri
+                    description: Link to the event
+        "500":
+          description: Something broke!
+  /catalogs:
+    get:
+      tags:
+        - Download catalogs
+      summary: Download catalogs to your project folder
+      responses:
+        "200":
+          description: Catalogs downloaded to your_project_folder/public/catalogs
+        "500":
+          description: Something broke!
