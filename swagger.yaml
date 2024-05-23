@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:2000
 paths:
-  /:
+  /data:
     get:
       tags:
         - Get catalogs data

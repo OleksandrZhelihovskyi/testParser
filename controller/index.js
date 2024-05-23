@@ -67,12 +67,13 @@ exports.downloadCatalogs = async (req, res) => {
     const catalogsUrlArray = await page.$$eval(".pdf", (elements) =>
       elements.map((element) => element.getAttribute("href")),
     );
+    let bufferPromises = []
     catalogsUrlArray.forEach(async (url) => {
       const response = await fetch(url);
       const buffer = await response.buffer();
-      await fs.writeFile(`public/catalogs/download${uuidv4()}.pdf`, buffer);
+      bufferPromises.push(fs.writeFile(`public/catalogs/download${uuidv4()}.pdf`, buffer))
     });
-
+    await Promise.allSettled(bufferPromises).catch(err=>{throw err})
     res.send("Files downloaded to your_project_folder/public/catalogs");
   } catch (err) {
     res.status(500).send("Something broke!");
